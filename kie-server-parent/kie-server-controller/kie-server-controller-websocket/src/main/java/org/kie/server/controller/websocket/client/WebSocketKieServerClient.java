@@ -86,6 +86,13 @@ public class WebSocketKieServerClient implements KieServicesClient {
     public WebSocketKieServerClient(String url) {
         this.url = url;
         this.serverInfo = manager.getServerInfoByUrl(url);
+       // Changes start here
+       logger.debug("Obtained cached server info {} to kie server located at {}", serverInfo, url);
+       logger.debug("Forcing get fresh server info from kie server located at {}", url);
+       ServiceResponse<KieServerInfo> freshServerInfo = this.getServerInfo();
+       logger.debug("Obtained FRESH server info {} to kie server located at {}", freshServerInfo.getResult().toString(), url);        
+       this.serverInfo = freshServerInfo.getResult();
+       // Changes end here
     }
 
     private static <T> T throwUnsupportedException(){
